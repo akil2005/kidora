@@ -1,0 +1,298 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts for a playful look -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+
+  <title>Edit Profile - Kidora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-image: url("{% static 'images/monkey.png' %}");
+      /* Jungle background */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      /* Removed padding-top from body as header will be fixed */
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 30px;
+      /* Adjusted gradient to match the green theme */
+      background: linear-gradient(90deg, #5CB85C 0%, #4CAF50 50%, #8BC34A 100%);
+      /* Green gradient for header */
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      border-radius: 0 0 30px 30px;
+      transition: background 0.5s ease-in-out;
+      position: fixed;
+      /* Make the header fixed */
+      width: 100%;
+      /* Make it span the full width */
+      top: 0;
+      /* Position at the very top */
+      left: 0;
+      /* Align to the left */
+      z-index: 1000;
+      /* Ensure it stays on top of everything */
+      box-sizing: border-box;
+      /* Include padding in the width calculation */
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-icon {
+      background: linear-gradient(45deg, #32CD32, #228B22);
+      /* Still vibrant green */
+      width: 60px;
+      height: 60px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+
+      40% {
+        transform: translateY(-10px);
+      }
+
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .logo-text {
+      font-family: 'Fredoka One', cursive;
+      font-size: 36px;
+      color: #FFF;
+      /* Changed to white for better contrast on green */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      /* Adjusted shadow for white text */
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .coins {
+      background: linear-gradient(45deg, #FFD700, #FFA500);
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-weight: 800;
+      font-size: 24px;
+      color: #2d5016;
+      box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* User Profile with Dropdown */
+    .user-profile-dropdown {
+      position: relative;
+      z-index: 1010;
+      /* Higher than header's z-index */
+    }
+
+    .user-profile {
+      background: linear-gradient(45deg, #5CB85C, #4CAF50);
+      /* Green gradient for user profile button */
+      color: white;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(50, 205, 50, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .user-profile:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(50, 205, 50, 0.6);
+    }
+
+    .profile-dropdown-content {
+      display: none;
+      position: absolute;
+      background: linear-gradient(135deg, #6A4C93 0%, #9A4993 100%);
+      /* Retaining purple for dropdown */
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1020;
+      /* Highest z-index for dropdown content */
+      min-width: 180px;
+      right: 0;
+      /* Align to the right of the profile button */
+      top: calc(100% + 10px);
+      /* Position below the button */
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+      padding: 10px 0;
+    }
+
+    .user-profile-dropdown:hover .profile-dropdown-content,
+    .user-profile-dropdown.active .profile-dropdown-content {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .profile-dropdown-item {
+      color: white;
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .profile-dropdown-item:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-orange-shadow {
+            box-shadow: 0 4px 0 #c25a00; /* A darker orange for a 3D effect */
+        }
+        .btn-orange-shadow:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #c25a00;
+        }
+  </style>
+</head>
+
+<body>
+  <header class="header" id="mainHeader">
+    <div class="logo">
+       <img src="{% static 'images/main_logo.jpeg' %}" alt="Kidora Logo" style="height: 32px; width: 32px; vertical-align: middle; margin-right: 8px;">
+       
+      <a href="{% url 'dashboard' %}" class="logo-text">KIDORA</a>
+    </div>
+    <div class="header-right">
+     
+      <div class="user-profile-dropdown" id="userProfileDropdown">
+        <div class="user-profile">
+          🌟 Hi, {{ user.first_name }}
+        </div>
+        <div class="profile-dropdown-content">
+          <a href="{% url 'user_profile' %}" class="profile-dropdown-item">
+            👤 My Profile
+          </a>
+          <div class="profile-dropdown-item">
+            <a href="{% url 'dashboard' %}" style="text-decoration:none; color:white">✏️ Dashboard</a>
+          </div>
+          <div class="profile-dropdown-item">
+            <a href="{% url 'logout' %}" style="text-decoration:none; color:white">🚪 Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex items-center justify-center min-h-[calc(100vh-64px)] p-4 mt-12">
+    <div class="w-full max-w-xl p-8 space-y-6 bg-green-500 bg-opacity-80 rounded-3xl shadow-2xl backdrop-blur-sm">
+      <!-- Profile Header -->
+      <div class="text-center text-white">
+        <h2 class="text-4xl font-bold">Edit My Profile</h2>
+      </div>
+
+      <!-- Profile Picture -->
+      <div class="flex justify-center">
+        <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-md">
+          <!-- Placeholder for a user avatar or icon -->
+        <img src="{% static 'images/avatar.png' %}" alt="Profile Picture" class="w-full h-full object-cover" />
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+
+      <form method="POST">
+        {% csrf_token %}
+        <!-- Profile Information Fields -->
+        <div class="space-y-4">
+          <div>
+            <label for="first_name" class="block text-lg font-medium text-white">First Name</label>
+            <input type="text" name="first_name"
+              class="mt-1 w-full p-3 bg-white border border-gray-300 rounded-xl shadow-sm text-gray-700 text-lg"
+              value="{{ user.first_name }}">
+          </div>
+        </div>
+
+        <div>
+          <label for="last_name" class="block text-lg font-medium text-white">Last Name</label>
+          <input name="last_name"
+            class="mt-1 w-full p-3 bg-white border border-gray-300 rounded-xl shadow-sm text-gray-700 text-lg"
+            value="{{ user.last_name }}">
+        </div>
+
+        <div>
+          <label for="username" class="block text-lg font-medium text-white">Username</label>
+          <input name="username"
+            class="mt-1 w-full p-3 bg-white border border-gray-300 rounded-xl shadow-sm text-gray-700 text-lg"
+            value="{{ user.username }}">
+        </div>
+
+        <div>
+          <label for="email" class="block text-lg font-medium text-white">Email Address</label>
+          <input name="email"
+            class="mt-1 w-full p-3 bg-white border border-gray-300 rounded-xl shadow-sm text-gray-700 text-lg"
+            value="{{ user.email }}">
+          {{ email }}
+        </div>
+        
+        <!-- Action Button -->
+         <br>
+        <button type="submit"
+        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg text-xl font-bold text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-200 btn-orange-shadow">
+        🎉 Save 
+      </button>
+    </form>
+  </div>
+  </main>
+
+</body>
+
+</html>
