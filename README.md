@@ -91,4 +91,4 @@ The application will be available at `http://127.0.0.1:8000/`.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a pull request or open an issue to discuss your ideas.
+Contributions are welcome! Please feel free to submit a pull request or open an issue to discuss your ideas
