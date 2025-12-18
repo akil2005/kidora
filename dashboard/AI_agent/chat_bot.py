@@ -13,7 +13,8 @@ def generate_rhyme(query: str):
     llm = ChatGoogleGenerativeAI(
         model="gemini-1.5-flash",
         temperature=0.7,
-        google_api_key=os.getenv("GOOGLE_API_KEY")
+        google_api_key=os.getenv("GOOGLE_API_KEY"),
+        convert_system_message_to_human=True
     )
 
     prompt = ChatPromptTemplate.from_messages([
@@ -34,7 +35,8 @@ def ask_your_buddy(question: str) -> str:
     llm = ChatGoogleGenerativeAI(
         model="gemini-1.5-flash",
         temperature=0.4,
-        google_api_key=os.getenv("GOOGLE_API_KEY")
+        google_api_key=os.getenv("GOOGLE_API_KEY"),
+        convert_system_message_to_human=True
     )
 
     prompt = ChatPromptTemplate.from_messages([
