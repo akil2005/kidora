@@ -1,6 +1,7 @@
 from langchain_google_genai.chat_models import ChatGoogleGenerativeAI
 from langchain.schema.output_parser import StrOutputParser
-from langchain.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
+
 import os
 from dotenv import load_dotenv
 
