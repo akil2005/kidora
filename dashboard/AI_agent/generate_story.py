@@ -1,4 +1,5 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_genai.chat_models import ChatGoogleGenerativeAI
+
 from langchain.schema.output_parser import StrOutputParser
 import os
 from dotenv import load_dotenv
@@ -21,3 +22,4 @@ def generate_story(question: str):
 
     chain = prompt | llm | StrOutputParser()
     return chain.invoke({"question": question})
+g
