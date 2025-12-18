@@ -1,19 +1,23 @@
-from langchain_google_genai import GoogleGenerativeAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.schema.output_parser import StrOutputParser
 import os
 from dotenv import load_dotenv
 from .prompt_templates import generate_story_prompt
+
 load_dotenv()
 
 
 def generate_story(question: str):
     """Generates a story using a language model and returns the response."""
-    llm = GoogleGenerativeAI(model="gemini-2.5-pro", 
-                             api_key=os.getenv("GOOGLE_API_KEY"))
+
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-1.5-flash",
+        temperature=0.6,
+        google_api_key=os.getenv("GOOGLE_API_KEY"),
+        convert_system_message_to_human=True
+    )
 
     prompt = generate_story_prompt()
 
     chain = prompt | llm | StrOutputParser()
-
-    response_llm = chain.invoke({"question": question})
-    return response_llm
+    return chain.invoke({"question": question})
