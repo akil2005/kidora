@@ -1,5 +1,5 @@
 from langchain_google_genai.chat_models import ChatGoogleGenerativeAI
-from langchain.schema.output_parser import StrOutputParser
+from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 
 import os
@@ -15,15 +15,21 @@ def generate_rhyme(query: str):
         model="gemini-1.5-flash",
         temperature=0.7,
         google_api_key=os.getenv("GOOGLE_API_KEY"),
-        convert_system_message_to_human=True
+        convert_system_message_to_human=True,
     )
 
     prompt = ChatPromptTemplate.from_messages([
-        ("system", "You are a friendly and creative AI that writes short, fun rhymes or poems for kids aged 5 to 10."),
-        ("human", """Write a short rhyme or poem (8 - 12 lines) about the theme: {query}.
+        (
+            "system",
+            "You are a friendly and creative AI that writes short, fun rhymes or poems for kids aged 5 to 10."
+        ),
+        (
+            "human",
+            """Write a short rhyme or poem (8 - 12 lines) about the theme: {query}.
 Make it simple, playful, and age-appropriate.
 Use easy vocabulary and a fun rhythm.
-Make sure the tone is cheerful."""),
+Make sure the tone is cheerful."""
+        ),
     ])
 
     chain = prompt | llm | StrOutputParser()
@@ -37,11 +43,14 @@ def ask_your_buddy(question: str) -> str:
         model="gemini-1.5-flash",
         temperature=0.4,
         google_api_key=os.getenv("GOOGLE_API_KEY"),
-        convert_system_message_to_human=True
+        convert_system_message_to_human=True,
     )
 
     prompt = ChatPromptTemplate.from_messages([
-        ("system", "You are a joyful, friendly AI buddy for kids. Be playful, encouraging, and age-appropriate."),
+        (
+            "system",
+            "You are a joyful, friendly AI buddy for kids. Be playful, encouraging, and age-appropriate."
+        ),
         ("human", "{question}"),
     ])
 
