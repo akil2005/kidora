@@ -12,7 +12,7 @@ def generate_rhyme(query: str):
     """Generates a rhyme using a language model and returns the response."""
 
     llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
+        model="gemini-1.5-pro",
         temperature=0.7,
         google_api_key=os.getenv("GOOGLE_API_KEY"),
         convert_system_message_to_human=True,
@@ -40,7 +40,7 @@ def ask_your_buddy(question: str) -> str:
     """Ask your AI buddy a question and get a response."""
 
     llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
+        model="gemini-1.5-pro",
         temperature=0.4,
         google_api_key=os.getenv("GOOGLE_API_KEY"),
         convert_system_message_to_human=True,
