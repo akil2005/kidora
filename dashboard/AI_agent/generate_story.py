@@ -11,7 +11,7 @@ def generate_story(question: str):
     """Generates a story using a language model and returns the response."""
 
     llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-pro",
+        model="gemini-pro",
         temperature=0.6,
         google_api_key=os.getenv("GOOGLE_API_KEY"),
         convert_system_message_to_human=True
