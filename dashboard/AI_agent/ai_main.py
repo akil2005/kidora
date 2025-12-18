@@ -1,5 +1,6 @@
 from .prompt_templates import generate_image_prompt, generate_story_prompt
-from .image_generator import generate_image
+#from .image_generator import generate_image
+
 from .generate_story import generate_story 
 from .extract_story_data import extract_story_data, extract_story_steps, extract_visual_descriptions
 from .post_image_generation.add_text_layer import add_text_to_image

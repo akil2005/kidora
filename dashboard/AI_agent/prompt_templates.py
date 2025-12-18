@@ -1,4 +1,5 @@
-from langchain.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
+
 import re
 
 def generate_image_prompt(setting, style, character, visual_scene_description):
