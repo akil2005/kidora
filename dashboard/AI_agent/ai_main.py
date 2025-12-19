@@ -1,48 +1,53 @@
 from .prompt_templates import generate_image_prompt
 from .image_generator import generate_image
-
-from .generate_story import generate_story
-from .extract_story_data import extract_story_data
 from .post_image_generation.add_text_layer import add_text_to_image
 
 
 def main_generate(question: str, img_path: str):
     """
-    Main pipeline:
-    1. Generate story
-    2. Extract structured story data
-    3. Generate images
-    4. Add text overlays
+    DEMO-STABLE PIPELINE (NO LLM / NO REGEX)
     """
 
-    max_tries = 3
-    story_response = None
-    story_steps = []
+    print("Starting demo story pipeline...")
 
-    # Try generating a valid 5-step story
-    for _ in range(max_tries):
-        raw_story = generate_story(question)
-        print("Story generated successfully!")
+    story_setting = "A colorful park in the morning"
+    story_style = "Cartoon illustration for kids"
+    main_character = "A detective duck wearing a coat and hat"
 
-        story_response = extract_story_data(raw_story)
-        story_steps = story_response.get("story_steps", [])
+    story_steps = [
+        {
+            "story_point": "The detective duck arrives at the park.",
+            "visual_scene_description": "A yellow duck in detective clothes standing in a green park."
+        },
+        {
+            "story_point": "He finds clues near a picnic basket.",
+            "visual_scene_description": "Duck inspecting a picnic basket with a magnifying glass."
+        },
+        {
+            "story_point": "He asks animals for help.",
+            "visual_scene_description": "Duck talking to squirrels and birds."
+        },
+        {
+            "story_point": "He finds a hidden nest.",
+            "visual_scene_description": "Duck discovering a nest behind bushes."
+        },
+        {
+            "story_point": "The egg is returned safely.",
+            "visual_scene_description": "Happy duck returning the egg to the nest."
+        },
+    ]
 
-        if len(story_steps) == 5:
-            break
+    print("Generating images...")
 
-    if not story_response or len(story_steps) != 5:
-        raise ValueError("Failed to generate a valid 5-step story")
-
-    # Generate images for each step
     for i in range(5):
         image_prompt = generate_image_prompt(
-            setting=story_response["story_setting"],
-            style=story_response["story_style"],
-            character=story_response["main_character"],
+            setting=story_setting,
+            style=story_style,
+            character=main_character,
             visual_scene_description=story_steps[i]["visual_scene_description"],
         )
 
-        print(f"Generating image {i + 1}")
+        print(f"Generating image {i + 1}...")
 
         generated_img_path = generate_image(
             prompt=image_prompt,
@@ -55,10 +60,12 @@ def main_generate(question: str, img_path: str):
             story_steps[i]["story_point"],
         )
 
+    print("Demo completed successfully!")
 
-# Standalone test (safe, optional)
+
+# Optional standalone test
 if __name__ == "__main__":
-    question = "A detective duck wearing a detective suit is solving the mystery of a missing egg"
-    img_path = "./generated_images"
-
-    main_generate(question, img_path)
+    main_generate(
+        "A detective duck solving a mystery",
+        "./generated_images"
+    )
